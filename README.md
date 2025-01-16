@@ -1,91 +1,115 @@
-# AI-RL Dungeon Arena
+# AI Reinforcement Learning Dungeon Arena
 
-This repository contains the implementation of an AI-driven dungeon arena where players and a boss engage in combat. The project utilizes reinforcement learning to train agents to effectively navigate and fight within the arena.
+[![GitHub](https://img.shields.io/github/license/kruemmel-python/ai-rl-dungeon-arena)](https://github.com/kruemmel-python/ai-rl-dungeon-arena/blob/main/LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues/kruemmel-python/ai-rl-dungeon-arena)](https://github.com/kruemmel-python/ai-rl-dungeon-arena/issues)
 
-## Table of Contents
+## Projektübersicht
 
-- [Introduction](#introduction)
-- [Features](#features)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Project Structure](#project-structure)
-- [Contributing](#contributing)
-- [License](#license)
+**AI-RL-Dungeon-Arena** ist ein hochdynamisches und interaktives KI-Projekt, das die Leistungsfähigkeit von Deep Reinforcement Learning (DRL) in einer spielbasierten Umgebung demonstriert. Es simuliert Kämpfe zwischen einer Gruppe von Spielern und einem Boss-Gegner in einem voxelbasierten Dungeon.
 
-## Introduction
+### Funktionen
+- **Spielerklassen**: Unterstützung für acht Spielerklassen (z. B. Tank, Heiler, verschiedene DPS-Typen).
+- **Boss-AI**: Dynamische Boss-KI mit mehreren Phasen und Spezialfähigkeiten.
+- **Deep Reinforcement Learning**: Verwendung von Double Deep Q-Learning für die Spieler- und Boss-KI.
+- **Priorisierte Erfahrungsspeicherung**: Verbesserung der Trainingsstabilität und Effizienz.
+- **Anpassbare Umgebung**: Konfigurierbare Parameter wie Spielfeldgröße, Anzahl der Spieler und Feinde.
 
-The AI-RL Dungeon Arena project is designed to simulate a dungeon environment where multiple player agents and a boss agent engage in combat. The players and the boss have various abilities and actions they can perform. The goal is to train the agents using reinforcement learning to optimize their strategies for defeating the boss and surviving the encounter.
+## Projektstruktur
 
-## Features
+Das Projekt umfasst mehrere Module, die unterschiedliche Aspekte des Spiels abdecken:
 
-- **Reinforcement Learning**: Utilizes Deep Q-Networks (DQN) for training player and boss agents.
-- **Diverse Player Classes**: Includes various player classes with unique abilities and actions.
-- **Boss Mechanics**: The boss has multiple phases, abilities, and special actions.
-- **Reward System**: A comprehensive reward system to guide the agents' learning process.
-- **Prioritized Experience Replay**: Enhances the learning efficiency by prioritizing significant experiences.
+```plaintext
+ai-rl-dungeon-arena/
+├── agents.py            # Deep Reinforcement Learning-Agenten
+├── boss_actions.py      # Aktionen und Logik der Boss-Charaktere
+├── config.py            # Globale Konfigurationsparameter
+├── entities.py          # Definition der Spielfiguren (Spieler, Boss, Adds)
+├── environment.py       # Umgebungslogik und Spielfluss
+├── main.py              # Hauptskript für Trainings- und Testläufe
+├── replay_buffer.py     # Implementierung des Replay Buffers
+├── tank_actions.py      # Spezifische Tank-Aktionen
+├── healer_actions.py    # Spezifische Heiler-Aktionen
+└── ...                  # Weitere Aktionsdateien für Klassen
+```
 
 ## Installation
 
-To set up the project, follow these steps:
-
-1. **Clone the Repository**:
+1. **Projekt klonen**:
    ```bash
    git clone https://github.com/kruemmel-python/ai-rl-dungeon-arena.git
    cd ai-rl-dungeon-arena
    ```
 
-2. **Install Dependencies**:
+2. **Abhängigkeiten installieren**:
+   Python 3.12 oder höher ist erforderlich. Installieren Sie die erforderlichen Bibliotheken mit:
    ```bash
    pip install -r requirements.txt
    ```
 
-3. **Set Up TensorFlow**:
-   Ensure you have TensorFlow installed and configured correctly. The project uses TensorFlow for building and training the neural networks.
+3. **Optionale GPU-Unterstützung**:
+   Falls Sie eine NVIDIA-GPU verwenden möchten, stellen Sie sicher, dass TensorFlow mit GPU-Unterstützung installiert ist.
 
-## Usage
+## Verwendung
 
-To run the project, follow these steps:
+### Training
+Das Hauptskript startet das Training der Spieler- und Boss-Agenten:
+```bash
+python main.py
+```
 
-1. **Navigate to the Project Directory**:
-   ```bash
-   cd ai-rl-dungeon-arena
-   ```
+### Modelle speichern und laden
+- Modelle werden automatisch im Verzeichnis gespeichert und geladen (`MODEL_PATH` und `BOSS_MODEL_PATH` in `config.py`).
 
-2. **Run the Main Script**:
-   ```bash
-   python main.py
-   ```
+### Konfiguration anpassen
+Ändern Sie die Parameter in der Datei `config.py`, um das Verhalten der Simulation anzupassen (z. B. Anzahl der Spieler, Spielfeldgröße, Lernrate).
 
-3. **Training and Saving Models**:
-   The main script will train the agents and save the models periodically. You can adjust the training parameters in the `config.py` file.
+## Spielerklassen und Aktionen
 
-## Project Structure
+Jede Spielerklasse hat spezifische Aktionen und Fähigkeiten. Hier ein Überblick über die Klassen und ihre Fähigkeiten:
 
-The project is organized into several modules:
+- **Tank**: Fokus auf Verteidigung und Schadensvermeidung.
+- **Healer**: Heilung und Unterstützung der Gruppe.
+- **DPS (Nah- und Fernkampf)**: Verursachen von maximalem Schaden.
 
-- **config.py**: Contains configuration parameters and constants.
-- **entities.py**: Defines the player, boss, and add entities.
-- **environment.py**: Implements the dungeon environment and game logic.
-- **agents.py**: Contains the implementation of the DQN agents for players and the boss.
-- **replay_buffer.py**: Implements the prioritized experience replay buffer.
-- **boss_actions.py**: Contains the logic for boss actions.
-- **main.py**: The main script to run the training loop and manage model saving/loading.
-- **tank_actions.py, healer_actions.py, melee_dps_1_actions.py, ...**: Contain the logic for specific player class actions.
+### Beispiel: Tank-Fähigkeiten
+```python
+CLASS_ACTIONS = {
+    "tank": {
+        "melee_attacks": ["taunt", "shield_bash", "heavy_strike", "block", "sweep"],
+        "ranged_attacks": ["chucking_shield", "shattering_throw"],
+        "buffs": ["fortify", "last_stand"],
+        "dots": ["rupture", "bleed"],
+        "unique": "avenger_shield"
+    }
+}
+```
 
-## Contributing
+## Reinforcement-Learning-Methodik
 
-Contributions are welcome! If you have any ideas, suggestions, or bug reports, please open an issue or submit a pull request.
+Das Projekt verwendet die folgende Architektur:
 
-## License
+1. **Double Deep Q-Learning**: Reduziert die Überbewertung von Q-Werten und verbessert die Stabilität.
+2. **Priorisierte Replay-Speicherung**: Ermöglicht das Sampling von wichtigen Erfahrungen basierend auf Fehlerprioritäten.
+3. **Target-Netzwerk-Updates**: Regelmäßige Aktualisierung der Zielnetzwerke zur Stabilisierung des Lernens.
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+## Mitwirken
+Beiträge zum Projekt sind willkommen! Bitte eröffnen Sie ein Issue oder senden Sie einen Pull-Request.
 
-## Contact
+### To-Do-Liste
+- Verbesserung der Aktionslogik für spezialisierte Klassen.
+- Optimierung der Trainingszeit durch Hyperparameter-Tuning.
+- Erweiterung der Umgebung um zusätzliche Gegner und Mechaniken.
 
-For any questions or inquiries, feel free to reach out to the project maintainer:
+## Lizenz
+Dieses Projekt steht unter der MIT-Lizenz. Weitere Informationen finden Sie in der Datei `LICENSE`.
 
-- **Ralf Krümmel**
+## Autor
+**Ralf Krümmel**
+
+- [GitHub-Profil](https://github.com/kruemmel-python)
+- Kontakt: [Email](mailto:ralf.kruemmel@example.com)
 
 ---
 
-This README provides a comprehensive overview of the AI-RL Dungeon Arena project, including its features, installation instructions, usage guidelines, project structure, contributing information, and licensing details.
+Vielen Dank für Ihr Interesse an **AI-RL-Dungeon-Arena**! Wir freuen uns auf Ihr Feedback und Ihre Beiträge.
+
