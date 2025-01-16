@@ -111,5 +111,5 @@ Dieses Projekt steht unter der MIT-Lizenz. Weitere Informationen finden Sie in d
 
 ---
 
-Vielen Dank für Ihr Interesse an **AI-RL-Dungeon-Arena**! Wir freuen uns auf Ihr Feedback und Ihre Beiträge.
+Vielen Dank für Ihr Interesse an **AI-RL-Dungeon-Arena**! 
 
